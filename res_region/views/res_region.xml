@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="region_root"
+                  name="Region"
+                  parent="sale.menu_sale_config"
+                  sequence="23"/>
+
+        <record id="res_region_country_form_view" model="ir.ui.view">
+            <field name="name">res.region.country.form</field>
+            <field name="model">res.region</field>
+            <field name="arch" type="xml">
+                <form string="Region Country">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="region_id"/>
+                                <field name="country_id"/>
+                            </group>
+                            <group>
+                                <field name="flag_image" widget="image" class="oe_avatar"/>
+                            </group>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_region_country_tree_view" model="ir.ui.view">
+            <field name="name">res.region.country.tree</field>
+            <field name="model">res.region</field>
+            <field name="arch" type="xml">
+                <tree string="Region Country">
+                    <field name="country_id"/>
+                    <field name="region_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_region_country_action" model="ir.actions.act_window">
+            <field name="name">Region country</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.region</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="res_region_country_action" id="res_region_country_menu" name="Region Country"
+                  parent="region_root" sequence="15"/>
+
+
+    </data>
+</odoo>
+
+
