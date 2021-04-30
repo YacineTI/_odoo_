@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem action="action_project_project_type_view"
+              id="menu_project_project_type_view"
+              parent="project.menu_project_config"
+              sequence="20"
+    />
+
+    <menuitem action="action_project_project_phase_view"
+              id="menu_project_project_phase_view"
+              parent="project.menu_project_config"
+              sequence="30"
+    />
+
+</odoo>

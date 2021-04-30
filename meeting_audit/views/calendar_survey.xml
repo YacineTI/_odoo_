@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_calendar_event_form_inht" model="ir.ui.view">
+        <field name="name">calendar.event.form.inht</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id"
+               ref="calendar.view_calendar_event_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='show_as']" position="after">
+                <field name="survey_id"
+                       domain="[('quizz_mode' ,'=', True)]"
+                       context="{'default_quizz_mode': True}"
+                />
+                <button name="action_start_survey"
+                        type="object"
+                        string="Start the audit"
+                        class="oe_stat_button"
+                        icon="fa-pencil-square-o"
+                        attrs="{'invisible': [('survey_id', '=', False)]}"
+                >
+                </button>
+
+
+                <field name="result_url" widget="url"
+                       text_field="Result" invisible="1"/>
+                <field name="result_url" invisible="1"/>
+                <field name="public_url_html" invisible="1"/>
+            </xpath>
+            <xpath
+                    expr="//page[last()]"
+                    position="after">
+                <page name="responses" string="Responses">
+                    <field
+                            name="survey_result_ids">
+                        <tree
+                                string="Responses"
+                        >
+                            <field name="survey_id"/>
+                            <field name="partner_id"/>
+                            <field name="date_create"/>
+                            <field name="quizz_score"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_calendar_event_form_popup_inht"
+            model="ir.ui.view">
+        <field name="name">calendar.event.form.inht</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id"
+               ref="calendar.view_calendar_event_form_popup"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='alarm_ids']" position="after">
+                <field name="survey_id"
+                       domain="[('quizz_mode' ,'=', True)]"
+                       context="{'calendar': True}"
+
+                />
+                <button name="action_start_survey"
+                        type="object"
+                        string="Start the audit"
+                        class="oe_stat_button"
+                        icon="fa-pencil-square-o"
+                        attrs="{'invisible': [('survey_id', '=', False)]}"
+
+                >
+                </button>
+            </xpath>
+            <xpath
+                    expr="//group[last()]"
+                    position="after">
+                <notebook>
+                    <page name="responses" string="Responses">
+                        <field
+                                name="survey_result_ids">
+                            <tree
+                                    string="Responses"
+                            >
+                                <field name="survey_id"/>
+                                <field name="partner_id"/>
+                                <field name="date_create"/>
+                                <field name="quizz_score"/>
+
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="survey_user_input_form_inht">
+        <field name="name">survey_user_input_form_inht</field>
+        <field name="model">survey.user_input</field>
+        <field name="inherit_id"
+               ref="survey.survey_user_input_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='token']" position="after">
+                <field name="calendar_id"
+                       domain="[('partner_ids' ,'in', partner_id)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

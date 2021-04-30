@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="project_project_phase"
+                model="project.project.phase">
+            <field name="name">New</field>
+            <field name="sequence">0</field>
+            <field name="code">Osis0001</field>
+            <field name="default">True</field>
+            <field name="note">Do not delete</field>
+        </record>
+
+
+    </data>
+</odoo>

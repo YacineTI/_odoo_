@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_view_calendar_event__inherit_tree"
+            model="ir.ui.view">
+        <field name="name">view.calendar.inherit.tree</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id"
+               ref="calendar.view_calendar_event_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_ids']"
+                   position="attributes">
+                <attribute name="widget">many2many_tags</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']"
+                   position="after">
+                <field name="survey_id"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="calendar_event_meeting_view_search"
+            model="ir.ui.view">
+        <field name="name">calendar.event.select</field>
+        <field name="model">calendar.event</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Meeting">
+                <field name="name"/>
+                <field name="partner_ids"/>
+                <group expand="0" string="Group By">
+                    <filter string="Survey" name="survey_id"
+                            domain="[]"
+                            context="{'group_by':'survey_id'}"/>
+
+
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_calendar_event_meeting"
+            model="ir.actions.act_window">
+        <field name="name">Meetings</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id"
+               ref="calendar_event_meeting_view_search"/>
+        <field name="domain">[('survey_id', '!=', False)]</field>
+    </record>
+
+
+    <menuitem
+            id="menu_calendar_event_meeting"
+            name="Meeting client"
+            sequence="10"
+            parent="calendar.mail_menu_calendar"
+            action="action_calendar_event_meeting"
+            groups="base.group_user"/>
+
+</odoo>

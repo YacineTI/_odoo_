@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <!-- Modify portal templates
+    <template id="portal_my_home_menu_meet" name="Portal layout : meet menu entry" inherit_id="portal.portal_breadcrumbs" priority="10">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'meet' or account" t-attf-class="breadcrumb-item #{'active ' if not account else ''}">
+                <a t-if="account" t-attf-href="/my/meet?{{ keep_query() }}">Meets</a>
+                <t t-else="">Meets</t>
+            </li>
+        </xpath>
+    </template>
+-->
+
+    <template id="portal_my_meet" name="My Portal">
+        <t t-call="portal.portal_layout">
+            <t t-set="my_details" t-value="True"/>
+            <div class="o_portal_my_meet">
+                <div class="oe_structure"
+                     id="oe_structure_portal_my_home_1"/>
+                <h3>Meets</h3>
+                <div class="o_portal_docs list-group">
+                </div>
+            </div>
+            <div class="oe_structure"
+                 id="oe_structure_portal_my_home_2"/>
+        </t>
+    </template>
+
+    <template id="portal_my_home_meet"
+              name="Portal My Home : meet entries"
+              inherit_id="portal.portal_my_home" priority="90">
+        <xpath expr="//div[hasclass('o_portal_docs')]"
+               position="after">
+            <![CDATA[&nbsp;]]>
+            <div class="o_portal_my_meets" name="meets">
+                <div class="oe_structure"
+                     id="oe_structure_portal_my_home_2"/>
+                <h3>Meets</h3>
+                <div class="o_portal_docs list-group">
+                </div>
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Meets</t>
+                    <t t-set="url" t-value="'/my/meet'"/>
+                    <t t-set="count" t-value="meet_count"/>
+                </t>
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Your audit result</t>
+                    <t t-set="url" t-value="'/my/result'"/>
+                    <t t-set="count" t-value="result_count"/>
+                </t>
+            </div>
+
+        </xpath>
+    </template>
+
+    <template id="portal_my_meets" name="My Meets">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Meets</t>
+            </t>
+            <t t-if="not accounts">
+                <p>You don't have any Meets yet.</p>
+            </t>
+            <t t-if="accounts" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th class="w-75">Title</th>
+                        <th class="text-right">Meets</th>
+                    </tr>
+                </thead>
+                <t t-foreach="accounts" t-as="account">
+                    <tr>
+                        <td>
+                            <t t-attf-href="/my/meets/#{account.id}?#{keep_query()}">
+                                <t t-esc="account.display_name"/>
+                            </t>
+                        </td>
+                        <td class="text-right">
+                            <div t-if="account.public_url">
+                                <a role="button" target="_blank"
+                                   class="btn btn-secondary"
+                                   t-attf-href="/my/meets/create/#{account.id}"
+                                >Start the audit
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <!-- Modify portal templates -->
+    <template id="portal_my_home_menu_result"
+              name="Portal layout : result menu entry"
+              inherit_id="portal.portal_breadcrumbs" priority="10">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]"
+               position="inside">
+            <li t-if="page_name == 'result' or account"
+                t-attf-class="breadcrumb-item #{'active ' if not account else ''}">
+                <a t-if="account"
+                   t-attf-href="/my/result?{{ keep_query() }}">
+                    Subscriptions
+                </a>
+                <t t-else="">Results</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_results" name="My results">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Results</t>
+            </t>
+            <t t-if="not accounts">
+                <p>You don't have any results yet.</p>
+            </t>
+            <t t-if="accounts" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th class="w-75">Results</th>
+                        <th class="text-center">Partner</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-right">Score</th>
+                    </tr>
+                </thead>
+                <t t-foreach="accounts" t-as="account">
+                    <tr>
+
+                        <td>
+                            <t t-attf-href="/my/results/#{account.id}?#{keep_query()}">
+                                <t t-esc="account.survey_id.title"/>
+                            </t>
+                        </td>
+
+                        <td class="text-center">
+                            <t t-if="account.partner_id">
+                               <span t-esc="account.partner_id.name"/>
+                            </t>
+                        </td>
+
+                        <td class="text-center">
+                            <span t-esc="account.date_create"/>
+                        </td>
+
+                        <td class="text-center" id="state">
+                            <t t-if="account.state == 'new'">
+                                <span class="badge badge-pill badge-warning">
+                                    <i class="fa fa-fw fa-refresh"/>
+                                    New
+                                </span>
+                            </t>
+                            <t t-if="account.state == 'skip'">
+                                <span class="badge badge-pill badge-warning">
+                                    <i class="fa fa-fw fa-refresh"/>
+                                    Skip
+                                </span>
+                            </t>
+                            <t t-if="account.state == 'done'">
+                                <span class="badge badge-pill badge-success">
+                                    <i class="fa fa-fw fa-check"/>
+                                    Done
+                                </span>
+                            </t>
+                        </td>
+                        <td class="text-right">
+                            <span t-esc="account.quizz_score"/>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

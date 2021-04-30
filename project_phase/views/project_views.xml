@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_project_project_filter_inht" model="ir.ui.view">
+        <field name="name">project.project.select.inht</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="arch" type="xml">
+            <xpath
+                    expr="//field[@name='name']"
+                    position="after">
+                <field name="phase_id"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="project_view_kanban_inht" model="ir.ui.view">
+        <field name="name">project.project.kanban</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <xpath
+                    expr="//kanban"
+                    position="attributes">
+                <attribute name="default_group_by">phase_id</attribute>
+                <attribute name="archivable">false</attribute>
+            </xpath>
+            <xpath
+                    expr="//field[@name='partner_id']"
+                    position="after">
+                <field name="project_type_id"/>
+                <field name="phase_id"/>
+                <field name="project_phase_ids"/>
+            </xpath>
+            <xpath
+                    expr="//div[@class='o_primary']/span[2]"
+                    position="after">
+                <div class="text-muted o_kanban_record_subtitle">
+                    <span t-if="record.project_type_id.value">
+                        <strong>
+                            Type:
+                            <t t-esc="record.project_type_id.value"/>
+                        </strong>
+                    </span>
+
+
+                </div>
+            </xpath>
+            <!--
+                        <xpath
+                                expr="//div[@class='o_primary']/span[2]"
+                                position="before">
+                                <div class="next-setp o_right">
+                                    <a class="fa fa-arrow-circle-left"
+                                       name="project_left"
+                                       type="object"
+                                       attrs="{'invisible': [('project_phase_ids', 'in', [])]}"></a>
+                                    <a class="fa fa-arrow-circle-right"
+                                       name="project_right"
+                                       type="object"
+                                       attrs="{'invisible': [('project_phase_ids', 'in', [])]}"></a>
+                                </div>
+                        </xpath>
+            #10
+            -->
+        </field>
+    </record>
+
+    <record id="edit_project_inht" model="ir.ui.view">
+        <field name="name">project.project.inht</field>
+        <field name="model">project.project</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath
+                    expr="//header"
+                    position="inside">
+
+                <field name="phase_id" widget="statusbar"
+                       options="{'clickable': '1'}"
+                       domain="['|',('code', '=', '000'),
+                       ('id', 'in', project_phase_ids)]"
+                       attrs="{'invisible': [('active', '=', False)]}"/>
+            </xpath>
+            <xpath
+                    expr="//field[@name='partner_id']"
+                    position="after">
+
+                <field name="project_type_id"/>
+            </xpath>
+
+            <xpath expr="//page[last()]" position="before">
+                <page name="project_phase"
+                      string="Phase">
+                    <field name="project_phase_ids"
+                           domain="[('default' ,'=', False)]"/>
+                </page>
+            </xpath>
+
+
+        </field>
+    </record>
+
+</odoo>
