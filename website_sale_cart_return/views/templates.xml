@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+
+
+        <template id="redirect_to_last_page"
+                  inherit_id="website_sale.cart">
+
+            <xpath expr="//a[@href='/shop']"
+                   position="attributes">
+
+                <attribute name="href">/last_shop_page</attribute>
+
+            </xpath>
+        </template>
+
+
+    </data>
+</odoo>
